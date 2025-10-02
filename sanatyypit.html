@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>sanatyypit</title>
+    <style>
+        body {
+            background-color: #FFB6B9;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            line-height: 8mm;
+            padding: 20px;
+        }
+        h1, p, label {
+            text-align: left;
+        }
+        img {
+            height: 4cm;
+            display: block;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            border: none;
+            border-radius: 10px;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .check-button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .correct {
+            background-color: #E3F5C9;
+        }
+        .incorrect {
+            background-color: #FFDAB9;
+        }
+        .feedback {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>S-sanat</h1>
+    <p>Taivuta ASUKAS-sanaa yksikössä.</p>
+    <img src="https://kuha.papunet.net/api/image/26746?lang=fi" alt="Kuva">
+    <form id="exerciseForm">
+        <p>1. Huoneessa on neljä <input type="text" name="q1">.</p>
+        <p>2. Tänään <input type="text" name="q2"> tehdään hoitosuunnitelma.</p>
+        <p>3. Minä soitan <input type="text" name="q3"> omaisille.</p>
+        <p>4. Hoitaja ottaa virtsanäytteen <input type="text" name="q4">.</p>
+        <p>5. Nyt <input type="text" name="q5"> on yskä.</p>
+        <p>6. Illalla <input type="text" name="q6"> väsyttää.</p>
+        <button type="button" class="check-button" onclick="checkAnswers()">Tarkista</button>
+    </form>
+    <div id="score"></div>
+
+    <script>
+        const correctAnswers = {
+            q1: "asukasta",
+            q2: "asukkaalle",
+            q3: "asukkaan",
+            q4: "asukkaalta",
+            q5: "asukkaalla",
+            q6: "asukasta"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            for (let key in correctAnswers) {
+                const input = document.querySelector(`input[name="${key}"]`);
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = correctAnswers[key];
+                let feedback = input.nextElementSibling;
+
+                if (!feedback || !feedback.classList.contains("feedback")) {
+                    feedback = document.createElement("span");
+                    feedback.classList.add("feedback");
+                    input.parentNode.appendChild(feedback);
+                }
+
+                if (userAnswer === correctAnswer) {
+                    input.className = "correct";
+                    feedback.textContent = "";
+                    score += 1;
+                } else {
+                    input.className = "incorrect";
+                    feedback.textContent = `→ ${correctAnswer}`;
+                }
+            }
+            document.getElementById("score").innerHTML = `<p>Pisteet: ${score} / 6</p>`;
+        }
+    </script>
+</body>
+</html>
